@@ -1,7 +1,9 @@
 module.exports = function(context) {
-  if(context.initialize) {
-    return context.initialize;
-  } else {
-    return function() {};
+  var _initializer = context.initialize ? context.initialize : (function() {});
+
+  for(var key in context) {
+    if ('initialize' != key) { _initializer.prototype[key] = context[key]; }
   }
+
+  return _initializer
 };

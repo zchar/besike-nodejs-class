@@ -5,5 +5,5 @@ module.exports = function(context) {
     if ('initialize' != key) { _initializer.prototype[key] = context[key]; }
   }
 
-  return _initializer
+  return _initializer;
 };

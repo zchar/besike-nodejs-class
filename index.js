@@ -13,10 +13,18 @@ module.exports = function(context, superClass) {
     if ('initialize' != key) { _class.prototype[key] = context[key]; }
   }
 
+  var current_class = _class;
   _class.prototype.super = function() {
-    var funcName = arguments[0];
-    var args = [].slice.call(arguments,1);
-    return _class.__super__.prototype[funcName].apply(this, args);
+    var funcName, args, result;
+    current_class = current_class.__super__;
+
+    funcName = arguments[0];
+    args = [].slice.call(arguments, 1);
+
+    result =  current_class.prototype[funcName].apply(this, args);
+    current_class = _class;
+
+    return result;
   };
 
   return _class;

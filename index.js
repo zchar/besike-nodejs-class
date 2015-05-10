@@ -1,17 +1,23 @@
 module.exports = function(context, superClass) {
-  var _initializer = context.initialize ? context.initialize : (function() {});
+  var _class = context.initialize ? context.initialize : (function() {});
 
   if (superClass) {
     var so = new superClass();
-    _initializer.prototype = so;
-    so.constructor = _initializer;
+    _class.prototype = so;
+    so.constructor = _class;
   }
 
-  _initializer.__super__ = superClass ? superClass : Object;
+  _class.__super__ = superClass ? superClass : Object;
 
   for(var key in context) {
-    if ('initialize' != key) { _initializer.prototype[key] = context[key]; }
+    if ('initialize' != key) { _class.prototype[key] = context[key]; }
   }
 
-  return _initializer;
+  _class.prototype.super = function() {
+    var funcName = arguments[0];
+    var args = [].slice.call(arguments,1);
+    return _class.__super__.prototype[funcName].apply(this, args);
+  };
+
+  return _class;
 };
